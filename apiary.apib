@@ -16,6 +16,10 @@ List available resources.
                     {
                         "title": "blogs",
                         "href": "/blogs"
+                    },
+                    {
+                        "title": "blogs/<regex(\"[a-f0-9]{24}\"):blog_id>/posts",
+                        "href": "/blogs/<regex(\"[a-f0-9]{24}\"):blog_id>/posts"
                     }
                 ]
             }
@@ -168,3 +172,38 @@ A single Blogs resource
                 }
             ]
         }
+
+## Blog posts [/blogs/{_id}/posts]
+
++ Parameters
+    - _id (string) ... Blog id.
+
+### List the posts for given blogs [GET]
+
++ Response 200 (application/json)
+
+        {
+            "_items": [
+                {
+                    "_links": {"self": {"href": "blogs/1/posts/1"}},
+                    "text": "my first post for this blog",
+                    "blog": "545b2656ea8e154e6db9aeb4",
+                    "_updated": "2014-11-06T08:34:52+0000",
+                    "_etag": "26db7ac8d445a162be5eb19288f0bc134e25252c",
+                    "original_creator": "543cc18bea8e150c58ac14bf",
+                    "_created": "2014-11-06T08:34:52+0000",
+                    "_id": "545b32acea8e154e6db9aeb8"
+                },
+                {
+                    "_links": {"self": {"href": "blogs/1/posts/2"}},
+                    "text": "my first post for this blog",
+                    "_etag": "26db7ac8d445a162be5eb19288f0bc134e23456d",
+                    "blog": "545b2656ea8e154e6db9aeb4",
+                    "_updated": "2014-11-06T08:36:52+0000",
+                    "original_creator": "543cc18bea8e150c58ac14bf",
+                    "_created": "2014-11-06T08:36:52+0000",
+                    "_id": "545b32acea8e154e6db9acb6"
+                }
+            ]
+        }
+

@@ -1,3 +1,209 @@
 FORMAT: 1A
 
 # Liveblog
+
+# Group Resources
+
+## GET /
+
+List available resources.
+
++ Response 200 (application/json)
+
+        {
+            "_links": {
+                "child": [
+                    {
+                        "title": "blogs",
+                        "href": "/blogs"
+                    },
+                    {
+                        "title": "blogs/<regex(\"[a-f0-9]{24}\"):blog_id>/posts",
+                        "href": "/blogs/<regex(\"[a-f0-9]{24}\"):blog_id>/posts"
+                    }
+                ]
+            }
+        }
+
+
+# Group Blogs
+
+## Blogs item [/blogs/{_id}]
+
+A single Blogs resource
+
++ Parameters
+    - _id (string, `1`) ... Blogs item identifier.
+    
++ Model (application/json)
+
+        {
+            "_links": {"self": {"href": "/blogs/1"}},
+            "name": "Test Blog",
+            "_updated": "2014-10-16T08:34:00+0000",
+            "_id": "543cc4c8ea8e150cd9ecd8f0",
+            "_created": "2014-10-16T08:23:49+0000",
+            "state": "open",
+            "description": "this is a test blog",
+            "_etag": "8a1ae4b1de1feff66922f9ff830d21a797e0617c"
+        }
+
+### Retrieve a Blog [GET]
+
++ Response 200 (application/json)
+
+    [Blogs item][]
+
++ Response 404
+
+### Update Blog [PATCH]
+
++ Request (application/json)
+    
+        {"name": "Foo"}
+
++ Response 200 (application/json)
+
+        {"_status": "OK"}
+
++ Response 403
+
+### Delete a Blog [DELETE]
+
++ Request (application/json)
+
+        {}
+
++ Response 204
+
+
+## Blogs collection [/blogs{?page,max_results}]
+
+### Create blog [POST]
+
++ Request (application/json)
+
+        {
+            "name": "Foo"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "_links": {"self": {"href": "/blogs/2"}},
+            "_status": "OK"
+        }
+
+### List all blogs [GET]
+
++ Parameters
+    + page = `1`(optional, integer) ... Page number
+    + max_results = `25`(optional, integer) ... Number of items to be returned
+    
++ Response 200 (application/json)
+
+        {
+            "_items": [
+                {
+                    "_links": {"self": {"href": "/blogs/1"}},
+                    "name": "Foo",
+                    "_updated": "2014-10-16T08:34:00+0000",
+                    "_id": "543cc4c8ea8e150cd9ecd8f0",
+                    "_created": "2014-10-16T08:23:49+0000",
+                    "state": "open",
+                    "description": "this is a test blog",
+                    "_etag": "8a1ae4b1de1feff66922f9ff830d21a797e0617c"
+                },
+                {
+                    "_links": {"self": {"href": "/blogs/2"}},
+                    "name": "Bar",
+                    "_updated": "2014-10-17T09:34:00+0000",
+                    "_id": "543cc4c8ea8e150cd9ecar56",
+                    "_created": "2014-10-17T09:33:49+0000",
+                    "state": "closed",
+                    "description": "this is the second blog",
+                    "_etag": "998d130f94ea009c0b675a666662f66d40e7c170"
+                }
+            ]
+        }
+
+### List open blogs [/blogs{?page,max_results,where}]
+
++ Parameters
+    + page = `1`(optional, integer) ... Page number
+    + max_results = `25`(optional, integer) ... Number of items to be returned
+    + where (optional, object) ... Filtering
+    
++ Response 200 (application/json)
+
+        {
+            "_items": [
+                {
+                    "_links": {"self": {"href": "/blogs/1"}},
+                    "name": "Test Blog",
+                    "_updated": "2014-10-16T08:34:00+0000",
+                    "_id": "543cc4c8ea8e150cd9ecd8f0",
+                    "_created": "2014-10-16T08:23:49+0000",
+                    "state": "open",
+                    "description": "this is a test blog"
+                }
+            ]
+        }
+
+### List closed blogs [/blogs{?page,max_results,where}]
+
++ Parameters
+    + page = `1`(optional, integer) ... Page number
+    + max_results = `25`(optional, integer) ... Number of items to be returned
+    + where (optional, object) ... Filtering
+
++ Response 200 (application/json)
+
+        {
+            "_items": [
+                {
+                    "_links": {"self": {"href": "/blogs/2"}},
+                    "name": "Foo",
+                    "_updated": "2014-10-17T09:34:00+0000",
+                    "_id": "543cc4c8ea8e150cd9ecar56",
+                    "_created": "2014-10-17T09:33:49+0000",
+                    "state": "closed",
+                    "description": "this is the second blog"
+                }
+            ]
+        }
+
+## Blog posts [/blogs/{_id}/posts]
+
++ Parameters
+    - _id (string) ... Blog id.
+
+### List the posts for given blogs [GET]
+
++ Response 200 (application/json)
+
+        {
+            "_items": [
+                {
+                    "_links": {"self": {"href": "blogs/1/posts/1"}},
+                    "text": "my first post for this blog",
+                    "blog": "545b2656ea8e154e6db9aeb4",
+                    "_updated": "2014-11-06T08:34:52+0000",
+                    "_etag": "26db7ac8d445a162be5eb19288f0bc134e25252c",
+                    "original_creator": "543cc18bea8e150c58ac14bf",
+                    "_created": "2014-11-06T08:34:52+0000",
+                    "_id": "545b32acea8e154e6db9aeb8"
+                },
+                {
+                    "_links": {"self": {"href": "blogs/1/posts/2"}},
+                    "text": "my first post for this blog",
+                    "_etag": "26db7ac8d445a162be5eb19288f0bc134e23456d",
+                    "blog": "545b2656ea8e154e6db9aeb4",
+                    "_updated": "2014-11-06T08:36:52+0000",
+                    "original_creator": "543cc18bea8e150c58ac14bf",
+                    "_created": "2014-11-06T08:36:52+0000",
+                    "_id": "545b32acea8e154e6db9acb6"
+                }
+            ]
+        }
+

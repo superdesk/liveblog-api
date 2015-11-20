@@ -14,17 +14,86 @@ List available resources.
             "_links": {
                 "child": [
                     {
+                        "title": "users",
+                        "href": "/users"
+                    },
+                    {
                         "title": "blogs",
                         "href": "/blogs"
                     },
                     {
+                        "title": "users/<regex(\"[a-f0-9]{24}\"):user_id>/blogs",
+                        "href": "users/<regex(\"[a-f0-9]{24}\"):user_id>/blogs"
+                    },
+                    {
+                        "title": "items",
+                        "href": "/items"
+                    },
+                                        {
+                        "title": "blogs/<regex(\"[a-f0-9]{24}\"):blog_id>/items",
+                        "href": "users/<regex(\"[a-f0-9]{24}\"):blog_id>/items"
+                    },
+                    {
+                        "title": "posts",
+                        "href": "/posts"
+                    },
+                    {
                         "title": "blogs/<regex(\"[a-f0-9]{24}\"):blog_id>/posts",
                         "href": "/blogs/<regex(\"[a-f0-9]{24}\"):blog_id>/posts"
+                    },
+                    {
+                        "title": "themes",
+                        "href": "/themes"
+                    },
+                    {
+                        "title": "roles",
+                        "href": "/roles"
+                    },
+                    {
+                        "title": "request_membership",
+                        "href": "/request_membership"
+                    },
+                                        {
+                        "title": "blogs/<regex(\"[a-f0-9]{24}\"):blog_id>/request_membership",
+                        "href": "/blogs/<regex(\"[a-f0-9]{24}\"):blog_id>/request_membership"
+                    },
+                    {
+                        "title": "client_blogs",
+                        "href": "/client_blogs"
+                    },
+                    {
+                        "title": "client_posts",
+                        "href": "/client_posts"
+                    },
+                    {
+                        "title": "client_users",
+                        "href": "/client_users"
                     }
                 ]
             }
         }
+# Group Authentication
 
+## Auth [/auth]
+
+### Authenticate [POST]
+
+The rest of the endpoints requiring authorization will have to supply the following header: "Authorization": b'basic ' + b64encode(token + b':')
+
++ Request (application/json;charset=UTF-8)
+
+        {
+            "username": "admin",
+            "password": "admin"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "_links": {"self": {"href": "/auth/123"}},
+            "token": "aNcdefgH",
+            "user": "abc"
+        }
 
 # Group Blogs
 
@@ -46,7 +115,8 @@ A single Blogs resource
             "state": "open",
             "original_creator":"543cc18bea8e150c58ac14bf"
             "description": "this is a test blog",
-            "_etag": "8a1ae4b1de1feff66922f9ff830d21a797e0617c"
+            "_etag": "8a1ae4b1de1feff66922f9ff830d21a797e0617c",
+            "members": []
         }
 
 ### Retrieve a Blog [GET]
@@ -114,7 +184,8 @@ A single Blogs resource
                     "state": "open",
                     "original_creator":"543cc18bea8e150c58ac14bf",
                     "description": "this is a test blog",
-                    "_etag": "8a1ae4b1de1feff66922f9ff830d21a797e0617c"
+                    "_etag": "8a1ae4b1de1feff66922f9ff830d21a797e0617c",
+                    "members": []
                 },
                 {
                     "_links": {"self": {"href": "/blogs/2"}},
@@ -125,7 +196,8 @@ A single Blogs resource
                     "state": "closed",
                     "description": "this is the second blog",
                     "_etag": "998d130f94ea009c0b675a666662f66d40e7c170",
-                    "original_creator":"543cc18bea8e150c58ac14bf"
+                    "original_creator":"543cc18bea8e150c58ac14bf",
+                    "members": []
                 }
             ]
         }
@@ -150,7 +222,8 @@ A single Blogs resource
                     "state": "open",
                     "original_creator":"543cc18bea8e150c58ac14bf",
                     "description": "this is a test blog",
-                    "_etag": "8a1ae4b1de1feff66922f9ff830d21a797e0617c"
+                    "_etag": "8a1ae4b1de1feff66922f9ff830d21a797e0617c",
+                    "members": []
                 }
             ]
         }
@@ -175,10 +248,225 @@ A single Blogs resource
                     "state": "closed",
                     "description": "this is the second blog",
                     "_etag": "998d130f94ea009c0b675a666662f66d40e7c170",
-                    "original_creator":"543cc18bea8e150c58ac14bf"
+                    "original_creator":"543cc18bea8e150c58ac14bf",
+                    "members": []
                 }
             ]
         }
+
+# Group Items
+
+## Items item
+
+## Items item [/items/{_id}]
+
+A single Items resource
+
++ Parameters
+    - _id (string, `1`) ... Items item identifier.
+    
++ Model (application/json)
+
+        {
+            "_links": {"self": {"href": "/items/1"}},
+            "_created": "2015-11-20T11:25:59+00:00"
+            "_current_version": 1
+            "_etag": "a10e545acd087de636f7a562afa535300fa2f6c0"
+            "_id": "urn:newsml:localhost:2015-11-20T13:25:59.450287:202058e9-3d41-4712-b26a-1553d9c7cbcb"
+            "_latest_version": 1
+            "_status": "OK"
+            "_updated": "2015-11-20T11:25:59+00:00"
+            "blog": "564eea09ea8e15459e0043c5"
+            "dateline": {date: "2015-11-20T11:25:59+00:00", located: null, source: "SF", text: null}
+            "event_id": "tag:localhost:2015:0fbd45c4-b214-4e6d-9cf3-835d475ae545"
+            "expiry": "2015-12-20T11:25:59+00:00"
+            "family_id": "urn:newsml:localhost:2015-11-20T13:25:59.450287:202058e9-3d41-4712-b26a-1553d9c7cbcb"
+            "firstcreated": "2015-11-20T11:25:59+00:00"
+            "guid": "urn:newsml:localhost:2015-11-20T13:25:59.450287:202058e9-3d41-4712-b26a-1553d9c7cbcb"
+            "item_type": "text"
+            "language": "en"
+            "marked_for_not_publication": false
+            "more_coming": false
+            "operation": "create"
+            "original_creator": "564dc322ea8e15264e299609"
+            "particular_type": "item"
+            "place": []
+            "priority": 3
+            "pubstatus": "usable"
+            "sign_off": "abc"
+            "source": "Liveblog"
+            "state": "draft"
+            "text": "my item-1"
+            "type": "text"
+            "unique_id": 10272
+            "unique_name": "#10272"
+            "urgency": 3
+            "version_creator": "564dc322ea8e15264e299609"
+            "versioncreated": "2015-11-20T11:25:59+00:00"
+        }
+
+### Retrieve an Item [GET]
+
++ Response 200 (application/json)
+
+    [Items item][]
+
++ Response 404
+
+### Update Item [PATCH]
+
++ Request (application/json)
+    
+        {"text": "new item"}
+
++ Response 200 (application/json)
+
+        {"_status": "OK"}
+
++ Response 403
+
+### Delete an Item [DELETE]
+
++ Request (application/json)
+
+        {}
+
++ Response 204
+
+
+## Items collection [/blogs{?page,max_results}]
+
+### Create  an item [POST]
+
++ Request (application/json)
+
+        {
+            "text": "foo-item"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "_links": {"self": {"href": "/items/2"}},
+            "_status": "OK"
+        }
+
+### List all items [GET]
+
++ Parameters
+    + page = `1`(optional, integer) ... Page number
+    + max_results = `25`(optional, integer) ... Number of items to be returned
+    
++ Response 200 (application/json)
+
+        {
+            "_items": [
+               {
+                "_created": "2015-11-20T11:25:59+00:00",
+                "_current_version": 1,
+                "_etag": "a10e545acd087de636f7a562afa535300fa2f6c0",
+                "_id": "urn:newsml:localhost:2015-11-20T13:25:59.450287:202058e9-3d41-4712-b26a-1553d9c7cbcb",
+                "_latest_version": 1,
+                "_links": {
+                "self": {
+                    "href": "items/urn:newsml:localhost:2015-11-20T13:25:59.450287:202058e9-3d41-4712-b26a-1553d9c7cbcb",
+                    "title": "Item"
+                        }
+                    },
+                "_type": "archive",
+                "_updated": "2015-11-20T11:25:59+00:00",
+                "blog": "564eea09ea8e15459e0043c5",
+                "dateline": {
+                    "date": "2015-11-20T11:25:59+00:00",
+                    "located": null,
+                    "source": "SF"
+                        },
+                "event_id": "tag:localhost:2015:0fbd45c4-b214-4e6d-9cf3-835d475ae545",
+                "expiry": "2015-12-20T11:25:59+00:00",
+                "family_id": "urn:newsml:localhost:2015-11-20T13:25:59.450287:202058e9-3d41-4712-b26a-1553d9c7cbcb",
+                "firstcreated": "2015-11-20T11:25:59+00:00",
+                "guid": "urn:newsml:localhost:2015-11-20T13:25:59.450287:202058e9-3d41-4712-b26a-1553d9c7cbcb",
+                "item_type": "text",
+                "language": "en",
+                "linked_in_packages": [1]
+                    0:  {
+                        "package": "urn:newsml:localhost:2015-11-20T13:25:59.510455:a0a2a4db-cafa-44ce-9577-9f5fb90e75bc"
+                        },
+                "marked_for_not_publication": false,
+                "more_coming": false,
+                "operation": "create",
+                "original_creator": "564dc322ea8e15264e299609",
+                "particular_type": "item",
+                "place": [0],
+                "priority": 3,
+                "pubstatus": "usable",
+                "sign_off": "abc",
+                "source": "Liveblog",
+                "state": "draft",
+                "text": "my item-1",
+                "type": "text",
+                "unique_id": 10272,
+                "unique_name": "#10272",
+                "urgency": 3,
+                "version_creator": "564dc322ea8e15264e299609",
+                "versioncreated": "2015-11-20T11:25:59+00:00"
+                },
+                {
+                "_created": "2015-11-20T07:22:58+00:00",
+                "_current_version": 1,
+                "_etag": "fd931d19bc208dc03247350bb60c276279d06867",
+                "_id": "urn:newsml:localhost:2015-11-20T09:22:58.285618:baba4932-aee4-487d-a7c5-37d25334acc7",
+                "_latest_version": 1,
+                "_links": {
+                    "self": {
+                    "href": "items/urn:newsml:localhost:2015-11-20T09:22:58.285618:baba4932-aee4-487d-a7c5-37d25334acc7",
+                    "title": "Item"
+                        }
+                    },
+                "type": "archive",
+                "_updated": "2015-11-20T07:22:58+00:00",
+                "blog": "564dca11ea8e152f915f7067",
+                "contents": [1]
+                    0:  "aa bb",
+                "dateline": {
+                    "date": "2015-11-20T07:22:58+00:00",
+                    "located": null,
+                    "source": "SF"
+                        },
+                "event_id": "tag:localhost:2015:11e66f40-4073-4234-a613-fedadc9f5b69",
+                "expiry": "2015-12-20T07:22:58+00:00",
+                "f"amily_id": "urn:newsml:localhost:2015-11-20T09:22:58.285618:baba4932-aee4-487d-a7c5-37d25334acc7",
+                "firstcreated": "2015-11-20T07:22:58+00:00",
+                "guid": "urn:newsml:localhost:2015-11-20T09:22:58.285618:baba4932-aee4-487d-a7c5-37d25334acc7",
+                "language": "en",
+                "linked_in_packages": [1]
+                    0:  {
+                        "package": "urn:newsml:localhost:2015-11-20T09:24:32.410728:97aca68e-5d59-46d2-8d78-4cfbae1185af"
+                        },
+                "marked_for_not_publication": false,
+                "more_coming": false,
+                "text": "my item-2",
+                "operation": "create",
+                "original_creator": "None",
+                "particular_type": "item",
+                "priority": 3,
+                "pubstatus": "usable",
+                "source": "Liveblog",
+                "state": "draft",
+                "type": "text",
+                "unique_id": 10268,
+                "unique_name": "#10268",
+                "urgency": 3,
+                "version_creator": "",
+                "versioncreated": "2015-11-20T07:22:58+00:00"
+                }
+            ]
+        }
+
+
+##################needs corrections from this point forward
+
+
 
 ## Blog posts [/blogs/{_id}/posts]
 
